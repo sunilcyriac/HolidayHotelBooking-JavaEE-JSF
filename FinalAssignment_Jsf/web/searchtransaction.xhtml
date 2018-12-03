@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    
+     <h:head>
+        <title>Search your transactions here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="resources/css/table-style.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" type="text/css" />
+    </h:head>
+    
+   
+    <h:body>
+        
+         <div style="margin-top:85px">
+    
+            
+         </div>
+        
+        <center>Search Transactions</center>
+    
+      
+    
+        
+        <h:form>
+            
+            <p:inputText  id="search" value="#{searchTransactionController.searchText}" ></p:inputText>
+            <p:messages for="search" />
+        <p:selectOneMenu value="#{searchTransactionController.textSelect}">
+            <f:selectItems value="#{searchTransactionController.mapValue}"/>
+        </p:selectOneMenu>
+            <h:commandButton value="Search" action="#{searchTransactionController.searches()}">
+        
+        
+            </h:commandButton>
+            
+      </h:form>
+
+        <div class="first-load #{!searchTransactionController.firsTimeLoad ? 'block' : 'no-display'}">
+        <div class="search-results #{searchTransactionController.resultAvailable ? 'block' : 'no-display'}">
+            
+            <table class = "table">
+                
+                <thead class="thead-dark">
+                    
+                <tr>
+                <th scope="col">Transaction ID</th>
+                <th scope="col">Transaction Name</th>
+                <th scope="col">Details</th>
+                
+                </tr>
+               </thead>
+            
+            <ui:repeat var="o" varStatus="status" value="#{searchTransactionController.searchResults}">
+            
+                <tr>
+                    
+                    <td>#{o.transactionid} </td>
+                    <td>#{o.transactionname} </td>
+                    <td> <h:link value="Details" outcome="detailresults" > 
+                            <f:param name="transactionid"  value="#{o.transactionid}"></f:param> 
+                                              </h:link> </td>
+                </tr>
+            
+            
+            
+            </ui:repeat>
+            
+            
+            </table>
+            
+        </div>
+            
+         
+        
+        
+        
+        <div class="#{!searchTransactionController.resultAvailable ? 'block' : 'no-display'}">
+        
+        
+            <p> Your search didn't return any results</p>
+        
+        </div>
+            
+            
+        
+        </div>
+        
+
+        
+        
+    </h:body>
+    
+    
+    <style>
+        
+        .no-display {
+            
+            display: none;
+            
+        }
+        .block {
+            
+            display: block;
+        }
+        
+        body  {
+        
+        background-color: white;
+        }
+        
+        
+        
+    </style>
+    
+    <p><h:link value="Return to Customer Home" outcome="customerhomepage"/> </p>
+    
+</html>

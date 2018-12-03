@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+   <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Holiday Hotel Booking</title>
+            </f:facet>
+            <link rel="stylesheet" type="text/css" href="resources/css/main.css"/>
+        </h:head>
+
+       <h:body onload="PF('dlg').show();">
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="160" resizable="true" closable="true" collapsible="true">
+                    <header>
+                    <div id="logo">
+                        <img src="resources/images/logo.png" height="100" width="100"/>
+                        <span>Holiday Hotel Booking</span>
+                        <div style="text-align: right; font-size: 14px">
+                            <h:outputLabel class="item" value="#{customerHomeController.custname}" style="font-size: large" />
+                            <p:link value="Logout" class="item" outcome="customerloginpage" />
+                        </div>
+                    </div>
+                    </header>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="70" closable="true" collapsible="true">
+                    <footer>
+                    <center>Copyright © Holiday Hotel Booking 2018</center>
+                    </footer>
+                </p:layoutUnit>
+        
+                <p:layoutUnit position="center">
+                <f:facet name="header">
+                    <center>
+                    <div class="menu">   
+                    <p:link value="Home" class="item" outcome="customerhomepage" />
+                    <p:link value="View Reservations" class="item" outcome="customerreservationpage" />
+                    </div>
+                    </center>
+                </f:facet>
+                        
+                <h:panelGrid style="width: 90%; margin-left: 5%; margin-right: 5%" columns="1" columnClasses="detail">
+                   
+                <p:outputPanel>
+                <p:growl id="messages" autoUpdate="true" life="3000" />
+                <h:form id="fr">
+                    <p:dataTable id="tbl" var="res" value="#{customerHomeController.reservationByCust()}"
+             paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {NextPageLink}"
+             paginator="true" rows="7" >
+                    <f:facet name="header">
+                        List of Reservations
+                    </f:facet>        
+                    
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Room Number"/>
+                        </f:facet>
+                        <h:outputText value="#{res[1]}" />
+                    </p:column>
+                    
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Room Type" />
+                        </f:facet>
+                        <h:outputText value="#{res[0]}" />
+                    </p:column>
+                    
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Start Date" />
+                        </f:facet>
+                        <h:outputText value="#{res[2]}" >
+                            <f:convertDateTime type="date" pattern="dd-MMM-yyyy"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="End Date" />
+                        </f:facet>
+                        <h:outputText value="#{res[3]}" >
+                            <f:convertDateTime type="date" pattern="dd-MMM-yyyy"/>
+                        </h:outputText>
+                    </p:column>
+                        
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Special Request" />
+                        </f:facet>
+                        <h:outputText value="#{res[4]}" />
+                    </p:column>
+                </p:dataTable>
+                </h:form>
+                </p:outputPanel>    
+                </h:panelGrid>    
+                    
+                </p:layoutUnit>
+                    
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>

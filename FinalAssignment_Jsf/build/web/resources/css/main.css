@@ -1,0 +1,101 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Oct 01, 2018, 5:30:10 PM
+    Author     : Sunil Cyriac
+*/
+.ui-layout-pane {
+    border: 0;
+    
+}
+.ui-layout-unit .ui-layout-unit-content {
+    padding: 0.2em 0em;
+    border: 0px none; 
+    overflow: hidden !important;
+}
+.scroll{
+     position: fixed; 
+     overflow-y: scroll;
+     height: 350px;
+     width: 650px;
+}
+.scroll2{
+    position: fixed; 
+     overflow-y: scroll;
+     height: 100px;
+}
+.scrl{
+    position: fixed; 
+     overflow-y: scroll;
+}
+.scrollcart{   
+     position: fixed; 
+     overflow-y: scroll;
+     height: 350px;
+}
+.scrollCustomer{
+    position: fixed; 
+    overflow-y: scroll;
+    height: 350px;
+    width: 936px;
+}
+.ui-tabs.ui-tabs-left > .ui-tabs-nav {
+   height: 349px;
+}
+/** panels **/
+.ui-tabs.ui-tabs-left > .ui-tabs-panels {
+  
+}
+#logo{
+   
+    text-align: center; 
+    font-size: 55px;
+    margin-top: 10px;
+    font-family: "Times New Roman", Times, serif;
+}
+#tagline{
+  
+    text-align: center;
+    font-size: 25px; 
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+header,footer{
+
+}
+.catlink{
+    text-decoration:none;
+}
+.catlink:hover,.catlink:active{
+    color:#cc0000;
+}
+.meals{
+    font-size: 20px;   
+}
+.addtocart{
+    height: 25px;
+    width: 25px;
+}
+.item{
+    margin-right: 20px;
+    text-decoration: none;
+    color: chartreuse;
+}
+.success{
+    color: greenyellow;
+}
+.failed{
+    color: red;
+}
+.roomtypeimg{
+    width: 300px;
+    height: 120px;
+}
+.logo{
+    width: 30%;
+}
+.details{
+    width: 70%;
+}

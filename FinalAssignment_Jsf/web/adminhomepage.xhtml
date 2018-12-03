@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <h:head>
+        <title>Holiday Hotel Booking</title>
+        <h:outputStylesheet name="resources/css/jsfcrud.css"/>
+        
+    </h:head>
+    <h:body>
+
+            <p:layout fullPage="true">
+                <ui:composition template="pagemainlayout3.xhtml">    
+                    
+                <ui:insert name="header" >
+                    <ui:include src="pageheader3.xhtml" />
+                </ui:insert>
+                                
+                <ui:insert name="footer" >
+                    <ui:include src="pagefooter.xhtml" />
+                </ui:insert>
+                    
+
+                <ui:define name="headercontent">    
+                <f:facet name="header">
+                    <center>
+                    <div class="menu">   
+                    <p:link value="Home" class="item" outcome="adminhomepage" />
+                    <p:link value="Check Rooms" class="item" outcome="roomshowgrid" />
+                    <p:link outcome="/customers/List" class="item" value="Manage customer accounts"/>
+                    </div>
+                    </center>
+                </f:facet>   
+                </ui:define>
+                    
+                <ui:define name="content">    
+                <h:panelGrid style="width: 100%" columns="2" columnClasses="detail">
+                <p:outputPanel>
+                    <p:messages id="messages" autoUpdate="true" closable="true" />
+                    <p:fieldset id="search" legend="Search">
+                    <h:panelGrid columns="1">
+                        
+                    <h:form id="form1" style="margin-bottom: 10px">
+                        <p:calendar id="startdate" value="#{adminHomeController.reservations.startdate}" pattern="yyyy-MM-dd"
+                                showOn="button" required="true" size="13">
+                        <p:ajax event="dateSelect" update="enddate" />
+                    </p:calendar>
+                    <p:watermark for="startdate" value="Start Date" /> 
+                    <p:calendar id="enddate" value="#{adminHomeController.reservations.enddate}" pattern="yyyy-MM-dd" 
+                                mindate="#{adminHomeController.reservations.startdate}" showOn="button" required="true" size="13">
+                        <p:ajax event="dateSelect" listener="#{adminHomeController.reset1()}" />
+                    </p:calendar>
+                    <p:watermark for="enddate" value="End Date" />    
+                    <p:commandButton value="Search By Dates" 
+                                     actionListener="#{adminHomeController.viewAllReservations()}" ajax="false"/>    
+                    </h:form>
+                    
+                    <h:form id="form2" style="margin-bottom: 10px">
+                        <p:selectOneMenu id="floor" value="#{adminHomeController.rooms.floorno}" style="width:200px" required="true">
+                        <f:ajax event="change" listener="#{adminHomeController.reset2()}" />
+                        <f:selectItem itemLabel="Select Floorno" itemValue="0" noSelectionOption="true" />
+                        <f:selectItems value="#{adminHomeController.adminSessionBean.allFloors()}" var="entry"
+                                       itemValue="#{entry}" itemLabel="#{entry}" />
+                    </p:selectOneMenu>
+                    <p:commandButton value="Search By Floor" 
+                                     actionListener="#{adminHomeController.viewAllReservations()}" ajax="false"/>
+                    </h:form>
+                    
+                    <h:form id="form3" style="margin-bottom: 10px">
+                    <p:selectOneMenu id="price" value="#{adminHomeController.roomtypes.price}" style="width:200px" required="true">
+                        <f:ajax event="change" listener="#{adminHomeController.reset3()}" />
+                        <f:selectItem itemLabel="Select Price" itemValue="0" noSelectionOption="true" />
+                        <f:selectItems value="#{adminHomeController.adminSessionBean.allRoomTypes()}" var="entry"
+                                       itemValue="#{entry.price}" itemLabel="#{entry.price}" />
+                    </p:selectOneMenu>
+                        <p:commandButton value="Search By Price" 
+                                         actionListener="#{adminHomeController.viewAllReservations()}" 
+                                         ajax="false"/>
+                    </h:form>
+                    
+                    </h:panelGrid>
+                    </p:fieldset>    
+                </p:outputPanel>  
+                    
+                <p:outputPanel>    
+                <h:form id="fr">
+                <p:dataTable id="tbl" var="res" value="#{adminHomeController.viewAllReservations()}"
+             paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {NextPageLink}"
+             paginator="true" rows="7" >
+                    <f:facet name="header">
+                        Reservation List
+                    </f:facet>        
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Customer Name" />
+                        </f:facet>
+                        <h:outputText value="#{res[0]} #{res[1]}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Room Number"/>
+                        </f:facet>
+                        <h:outputText value="#{res[2]}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Start Date" />
+                        </f:facet>
+                        <h:outputText value="#{res[3]}" >
+                            <f:convertDateTime type="date" pattern="dd-MMM-yyyy"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="End Date" />
+                        </f:facet>
+                        <h:outputText value="#{res[4]}" >
+                            <f:convertDateTime type="date" pattern="dd-MMM-yyyy"/>
+                        </h:outputText>
+                    </p:column>
+                        
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Special Request" />
+                        </f:facet>
+                        <h:outputText value="#{res[5]}" />
+                    </p:column>
+                </p:dataTable>
+                </h:form>
+                </p:outputPanel>    
+                </h:panelGrid>    
+                    
+                </ui:define>
+                       
+                </ui:composition>   
+            </p:layout>
+            
+        </h:body>
+  
+</html>
+

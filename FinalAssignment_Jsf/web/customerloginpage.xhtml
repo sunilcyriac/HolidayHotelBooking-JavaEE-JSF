@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+   <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Holiday Hotel Booking</title>
+            </f:facet>
+            <link rel="stylesheet" type="text/css" href="resources/css/main.css"/>
+        </h:head>
+
+       <h:body onload="PF('dlg').show();">
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="160" resizable="true" closable="true" collapsible="true">
+                    <header>
+                    <div id="logo">
+                        <img src="resources/images/logo.png" height="100" width="100"/>
+                        <span>Holiday Hotel Booking</span>
+                        <div style="text-align: right; font-size: 14px">
+                            <p:link value="Admin Login" class="item" outcome="adminloginpage" />
+                            <p:link value="Customer Login" class="item" outcome="customerloginpage" />
+                            <p:link value="SignUp" class="item" outcome="signuppage" />
+                        </div>
+                    </div>
+                    </header>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="70" closable="true" collapsible="true">
+                    <footer>
+                    <center>Copyright © Holiday Hotel Boooking 2018</center>
+                    </footer>
+                </p:layoutUnit>
+        
+                <p:layoutUnit position="center">
+                <f:facet name="header">
+                    <center>
+                    <div class="menu">   
+                    <p:link value="Home" class="item" outcome="index" />
+                    <p:link value="Check Rooms" class="item" outcome="roombookingpage" />
+                    </div>
+                    </center>
+                </f:facet>
+                    
+                <center>
+                    <h:outputText class="success" value="#{customerHomeController.passmsg}" />
+                    <input type="hidden" value="#{customerHomeController.setPassmsg('')}" />
+                    <h:outputText class="failed" value="#{customerHomeController.errormsg}" />
+                    <input type="hidden" value="#{customerHomeController.setErrormsg('')}" />
+                </center>
+                    
+                <h:form>        
+                    <p:growl id="growl" sticky="false" showDetail="true" life="3000" />
+
+                    <p:dialog header="Customer Login" widgetVar="dlg" resizable="false" closable="false" draggable="false">
+                        <h:panelGrid columns="2" cellpadding="3">
+                            <h:outputLabel for="username" value="Username:" />
+                            <p:inputText id="username" value="#{customerHomeController.customers.username}" required="true" label="username" />
+
+                            <h:outputLabel for="password" value="Password:" />
+                            <p:password id="password" value="#{customerHomeController.customers.password}" required="true" label="password" />
+                            
+                            <f:facet name="footer">
+                                <p:commandButton value="Login" update="growl" action="#{customerHomeController.login()}"  />
+                            </f:facet>  
+                        </h:panelGrid>
+                    </p:dialog>
+                </h:form>
+                </p:layoutUnit>
+                    
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>

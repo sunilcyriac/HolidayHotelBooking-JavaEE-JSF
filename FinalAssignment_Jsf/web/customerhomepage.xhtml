@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <h:head>
+        <title>Holiday Hotel Booking</title>
+        <h:outputStylesheet name="resources/css/jsfcrud.css"/>
+        
+    </h:head>
+    <h:body>
+
+            <p:layout fullPage="true">
+                <ui:composition template="pagemainlayout2.xhtml">     
+                    
+                <ui:insert name="header" >
+                    <ui:include src="pageheader2.xhtml" />
+                </ui:insert>
+                                
+                <ui:insert name="footer" >
+                    <ui:include src="pagefooter.xhtml" />
+                </ui:insert>
+                    
+
+                <ui:define name="headercontent">    
+                <f:facet name="header">
+                    <center>
+                    <div class="menu">   
+                    <p:link value="Home" class="item" outcome="customerhomepage" />
+                    <p:link value="View Reservations" class="item" outcome="customerreservationpage" />
+                    <p:link value="Search Transactions" class="item" outcome="searchtransaction" />
+                    </div>
+                    </center>
+                </f:facet>   
+                </ui:define>
+                    
+                <ui:define name="content"> 
+                <p:messages id="messages" autoUpdate="true" closable="true" />    
+                <div class="container">    
+                    <h:panelGrid columns="1" cellpadding="" >
+                    <h:form>
+                    <p:fieldset id="roombook" legend="Reserve Rooms">        
+                        <table cellpadding="1" cellspacing="2">
+                        <tr>
+                        <td><p:outputLabel value="Start Date:"/></td>    
+                        <td><p:calendar id="startdate" value="#{customerHomeController.reservations.startdate}" pattern="yyyy-MM-dd"
+                                        mindate="#{customerHomeController.curdate}" showOn="button" required="true" >
+                            <p:ajax event="dateSelect" update="enddate" />
+                        </p:calendar>
+                        <p:watermark for="startdate" value="Start Date" /></td>     
+                        <td><p:outputLabel value="End Date:"/></td>
+                        <td><p:calendar id="enddate" value="#{customerHomeController.reservations.enddate}" pattern="yyyy-MM-dd" 
+                                    mindate="#{customerHomeController.reservations.startdate}" showOn="button" required="true" />
+                            <p:watermark for="enddate" value="End Date" /></td>
+                        </tr>
+                        <tr>
+                        <td><p:outputLabel for="roomtype" value="Room Type:" /></td>
+                        <td><p:selectOneMenu id="roomtype" value="#{customerHomeController.roomtypes.typeId}" style="width:200px" required="true">
+                                <p:ajax update="roomno" />
+                                <f:selectItem itemLabel="Select One Room Type" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{customerHomeController.allRoomTypes()}" var="entry"
+                                               itemValue="#{entry.typeId}" itemLabel="#{entry.roomtype} (#{entry.price})" />
+                            </p:selectOneMenu></td>    
+                        <td><p:outputLabel for="roomno" value="Room No:"/></td>
+                        <td><p:selectOneMenu id="roomno" value="#{customerHomeController.rooms.roomno}" style="width:150px" required="true">
+                            <f:selectItem itemLabel="Select a Room" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{customerHomeController.allRoomsByType(customerHomeController.roomtypes.typeId)}" var="entry2"
+                                           itemValue="#{entry2.roomno}" itemLabel="#{entry2.roomno}" />
+                            </p:selectOneMenu></td> 
+                        </tr>
+                        <tr>
+                        <td colspan="1"><p:outputLabel value="Special Request:"/></td>
+                        <td colspan="3"><p:inputText id="sprq" value="#{customerHomeController.reservations.specialrequest}" style="width: 350px"/>
+                        <p:watermark for="sprq" value="Special Request" /></td>
+                        </tr>    
+                        <tr>
+                        <td colspan="4"><center>    
+                            <p:commandButton value="Add To Cart" 
+                                             actionListener="#{customerHomeController.checkAvailableByRoomNo(customerHomeController.roomtypes.typeId,customerHomeController.rooms.roomno)}" 
+                                             update=":fr:crt" />
+                        </center></td>
+                        </tr>    
+                        </table>
+                    </p:fieldset>    
+                    </h:form>
+                    </h:panelGrid>
+                      
+                </div>
+                    
+                </ui:define>
+                    
+                <ui:define name="cart">
+                    <h:form id="fr">
+                        <f:facet name="header">
+                                Room Cart
+                        </f:facet>
+                        <p:dataTable id="crt" styleClass="scrollcart" rowIndexVar="rowId" var="cart" 
+                                     value="#{roomcartController.viewCart()}" sortBy="#{roomcartController.roomid}">
+                            <p:column headerText="Start Date">
+                                #{cart.frmtStartDate()}
+                            </p:column>
+                            <p:column headerText="End Date">
+                                #{cart.frmtEndDate()}
+                            </p:column>
+                            <p:column headerText="Room Type">
+                                #{cart.roomtype}
+                            </p:column>
+                            <p:column headerText="Room No">
+                                #{cart.roomno}
+                            </p:column>
+                            <p:column headerText="Room Price">
+                                #{cart.price}
+                            </p:column>
+                            <p:column headerText="Remove">
+                                <center>
+                                    <h:commandButton image="resources/images/rm.png" styleClass="addtocart" action="#{roomcartController.removeFromCart(rowId)}">
+                                    <f:ajax render="crt"/>
+                                </h:commandButton>
+                                </center>
+                            </p:column>
+                            
+                            <p:summaryRow>
+                            <p:column style="text-align:right" colspan="2">
+                                <h:outputText value="Amount (+HST):" />
+                            </p:column>
+                            <p:column colspan="2">
+                                <h:outputText value="#{roomcartController.totalAmount()}">
+                                    <f:convertNumber type="currency" currencySymbol="AUD" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column colspan="2">
+                                <p:commandButton value="CheckOut" action="transactioninfopage?faces-redirect=true"/>
+                            </p:column>    
+                            </p:summaryRow>
+                            
+                        </p:dataTable>   
+                </h:form>
+                </ui:define>    
+                       
+                </ui:composition>   
+            </p:layout>
+        </h:body>
+  
+</html>
+

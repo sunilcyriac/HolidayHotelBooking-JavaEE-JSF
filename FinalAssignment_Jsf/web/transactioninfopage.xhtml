@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Holiday Hotel Booking</title>
+        <h:outputStylesheet name="resources/css/jsfcrud.css"/>
+        
+    </h:head>
+    <h:body>
+
+            <p:layout fullPage="true">
+                <ui:composition template="pagemainlayout2.xhtml">    
+                    
+                <ui:insert name="header" >
+                    <ui:include src="pageheader2.xhtml" />
+                </ui:insert>
+                                
+                <ui:insert name="footer" >
+                    <ui:include src="pagefooter.xhtml" />
+                </ui:insert>
+                    
+
+                <ui:define name="headercontent">    
+                <f:facet name="header">
+                    <center>
+                    <div class="menu">   
+                    <p:link value="Home" class="item" outcome="customerhomepage" />
+                    <p:link value="View Reservations" class="item" outcome="customerreservationpage" />
+                    </div>
+                    </center>
+                </f:facet>   
+                </ui:define>
+                    
+                <ui:define name="content"> 
+                <center>    
+                <h:form>
+                    <p:panel id="panel">
+                        <p:messages id="msgs" closable="true"/>
+                        <center><b>Please enter Transaction Details</b></center>    
+                    <h:panelGrid columns="4" cellpadding="3">
+                        <p:outputLabel for="paymenttype" value="Payment Type: " />
+                        <p:selectOneRadio id="paymenttype" value="#{customerHomeController.transaction.paymenttype}" required="true">
+                            <f:selectItem itemLabel="Cash" itemValue="cash" />
+                            <f:selectItem itemLabel="Credit" itemValue="credit" />
+                            <f:selectItem itemLabel="Debit" itemValue="debit" />
+                            <p:ajax update="msgPaymenttype" event="blur" />
+                        </p:selectOneRadio>
+                        <p:watermark for="paymenttype" value="Payment Type" />
+                        <p:message for="paymenttype" id="msgPaymenttype" display="icon" />
+                        
+                        <p:outputLabel for="price" value="Amount: " />
+                        <p:inputText id="price" value="#{customerHomeController.transaction.price}" required="true" label="Price">
+                            <f:validateLength minimum="2" />
+                            <p:ajax update="msgPrice" event="blur" />
+                        </p:inputText>
+                        <p:watermark for="price" value="Final Amount" />
+                        <p:message for="price" id="msgPrice" display="icon" />
+
+                        <p:outputLabel for="cardholder" value="Card Holder: " />
+                        <p:inputText id="cardholder" value="#{customerHomeController.transaction.cardholder}" label="Card Holder" >
+                            <f:validateLength minimum="0" />
+                            <p:ajax update="msgCardholder" event="blur" />
+                        </p:inputText>
+                        <p:watermark for="cardholder" value="Card Holder Name" />
+                        <p:message for="cardholder" id="msgCardholder" display="icon" />
+                        
+                        <p:outputLabel for="cardname" value="Transaction Name: " />
+                        <p:inputText id="cardname" value="#{customerHomeController.transaction.transactionname}" label="Transaction Name" >
+                            <f:validateLength minimum="0" />
+                            <p:ajax update="msgCardname" event="blur" />
+                        </p:inputText>
+                        <p:watermark for="cardname" value="HOLIDAY/TOUR/BUSINESS" />
+                        <p:message for="cardname" id="msgCardname" display="icon" />
+                        
+                        <p:outputLabel for="cardno" value="Card No: " />
+                        <p:inputText id="cardno" value="#{customerHomeController.transaction.cardno}" label="Card No" >
+                            <f:validateLength minimum="0" />
+                            <p:ajax update="msgCardno" event="blur" />
+                        </p:inputText>
+                        <p:watermark for="cardno" value="XXXX-XXXX-XXXX-XXXX" />
+                        <p:message for="cardno" id="msgCardno" display="icon" />
+                        
+                        <p:outputLabel for="expirydate" value="Expiry Date: " />
+                        <p:inputText id="expirydate" value="#{customerHomeController.transaction.expirydate}" label="Expiry Date" >
+                            <f:validateLength minimum="0" />
+                            <p:ajax update="msgExpirydate" event="blur" />
+                        </p:inputText>
+                        <p:watermark for="expirydate" value="YYYY/MM" />
+                        <p:message for="expirydate" id="msgExpirydate" display="icon" />
+                    </h:panelGrid>
+                    
+                    <p:commandButton value="Confirm Booking" update="panel :fr:crt" 
+                                     actionListener="#{customerHomeController.save()}" icon="ui-icon-check" />
+                    <br/>
+                    <p:link value="Another Booking" outcome="customerhomepage"/>
+                </p:panel>
+                    
+                </h:form>
+                    
+                </center>   
+                </ui:define>
+                
+                <ui:define name="cart">
+                    <h:form id="fr">
+                        <f:facet name="header">
+                                Room Cart
+                        </f:facet>
+                        <p:dataTable id="crt" styleClass="scrollcart" rowIndexVar="rowId" var="cart" 
+                                     value="#{roomcartController.viewCart()}" sortBy="#{roomcartController.roomid}">
+                            <p:column headerText="Start Date">
+                                #{cart.frmtStartDate()}
+                            </p:column>
+                            <p:column headerText="End Date">
+                                #{cart.frmtEndDate()}
+                            </p:column>
+                            <p:column headerText="Room Type">
+                                #{cart.roomtype}
+                            </p:column>
+                            <p:column headerText="Room No">
+                                #{cart.roomno}
+                            </p:column>
+                            <p:column headerText="Room Price">
+                                #{cart.price}
+                            </p:column>
+                            
+                            <p:summaryRow>
+                            <p:column style="text-align:right" colspan="2">
+                                <h:outputText value="Final Amount: " />
+                            </p:column>
+                            <p:column colspan="2">
+                                <h:outputText value="#{roomcartController.totalAmount()}">
+                                    <f:convertNumber type="currency" currencySymbol="AUD " />
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <h:link value="Back" outcome="customerhomepage" />
+                            </p:column>    
+                            </p:summaryRow>
+                            
+                        </p:dataTable>   
+                </h:form>
+                </ui:define>
+                       
+                </ui:composition>   
+            </p:layout>
+        </h:body>
+  
+</html>

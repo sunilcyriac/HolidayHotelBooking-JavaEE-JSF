@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+   <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Holiday Hotel Booking</title>
+            </f:facet>
+            <link rel="stylesheet" type="text/css" href="resources/css/main.css"/>
+        </h:head>
+       <h:body>
+
+            <p:layout fullPage="true">
+                <ui:composition template="pagemainlayout.xhtml">    
+                    
+                <ui:insert name="header" >
+                    <ui:include src="pageheader.xhtml" />
+                </ui:insert>
+                                
+                <ui:insert name="footer" >
+                    <ui:include src="pagefooter.xhtml" />
+                </ui:insert>
+                    
+
+                <ui:define name="headercontent">    
+                <f:facet name="header">
+                    <center>
+                    <div class="menu">   
+                    <p:link value="Home" class="item" outcome="index" />
+                    <p:link value="Check Rooms" class="item" outcome="roombookingpage" />
+                    </div>
+                    </center>
+                </f:facet>   
+                </ui:define>
+                    
+                <ui:define name="content"> 
+                    <p:messages id="messages" autoUpdate="true" closable="true" />
+                    <p:dataScroller value="#{customerHomeController.allRoomTypes()}" rowIndexVar="rid" var="roomtype" chunkSize="10">
+                        
+                        <h:panelGrid id="grd" columns="2" style="width:100%" columnClasses="logo,detail">
+                            <p:outputPanel>
+                                <p:graphicImage name="images/roomtype/#{roomtype.typeId}.jpg" styleClass="roomtypeimg"/>
+                            </p:outputPanel>
+                            
+                            <p:outputPanel>
+                                <h:panelGrid columns="2">
+                                    <h:outputText value="#{roomtype.roomtype} : " style="font-weight: bold; margin-right: 40px" />
+                                    <h:outputText value="#{roomtype.roomdetail} (#{roomtype.price} AUD + TAX)" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="4" id="grid1">
+                                    <h:form id="form1">
+                                    <p:calendar id="startdate" value="#{customerHomeController.reservations.startdate}" pattern="yyyy-MM-dd"
+                                                mindate="#{customerHomeController.curdate}" showOn="button" style="margin-right: 30px" required="true">
+                                        <p:ajax event="dateSelect" update="enddate" />
+                                    </p:calendar>
+                                    <p:watermark for="startdate" value="Start Date" />    
+                                    <p:calendar id="enddate" value="#{customerHomeController.reservations.enddate}" pattern="yyyy-MM-dd" 
+                                                mindate="#{customerHomeController.reservations.startdate}" showOn="button" style="margin-right: 30px" required="true"/>
+                                    <p:watermark for="enddate" value="End Date" />
+                                    
+                                    <p:spinner id="qty" value="#{customerHomeController.qty}" size="5" required="true" min="1" max="10" style="margin-right: 20px"/>
+                                    <p:watermark for="qty" value="Qty" />
+                                    
+                                    <p:commandButton value="Check" actionListener="#{customerHomeController.checkAvailabilty(rid)}" ajax="false" />
+                                    </h:form>
+                                </h:panelGrid>
+                            </p:outputPanel>
+                        </h:panelGrid>
+                    </p:dataScroller>
+  
+                
+                
+                    
+                </ui:define>
+                       
+                </ui:composition>   
+            </p:layout>
+        </h:body>
+
+    </f:view>
+</html>

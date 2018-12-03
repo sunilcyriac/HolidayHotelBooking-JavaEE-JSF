@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Holiday Hotel Booking</title>
+        <h:outputStylesheet name="css/jsfcrud.css"/>
+        <h:outputStylesheet name="resources/css/jsfcrud.css"/>
+
+    </h:head>
+    <h:body>
+
+        <p:layout fullPage="true">
+            <ui:composition template="pagemainlayout.xhtml">    
+
+                <ui:insert name="header" >
+                    <ui:include src="pageheader.xhtml" />
+                </ui:insert>
+
+                <ui:insert name="footer" >
+                    <ui:include src="pagefooter.xhtml" />
+                </ui:insert>
+
+
+                <ui:define name="headercontent">    
+                    <f:facet name="header">
+                        <center>
+                            <div class="menu">   
+                                <p:link value="Home" class="item" outcome="index" />
+                                <p:link value="Check Rooms" class="item" outcome="roombookingpage" />
+                                
+                                
+
+                            </div>
+                        </center>
+                    </f:facet>   
+                </ui:define>
+
+                <ui:define name="content"> 
+
+                    <div class="container">
+                        <center>
+                            <img src="resources/images/hotel1.jpg" alt="Chania"  />
+                        </center>    
+                    </div>
+
+                </ui:define>
+
+            </ui:composition>   
+        </p:layout>
+        <br />
+        <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
+        
+    </h:body>
+
+
+</html>
+
